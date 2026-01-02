@@ -35,7 +35,7 @@ Import the collection into Postman and run the **"Complete E2E Test Scenario"** 
 **Register** → **Login** → **Browse Products** → **Add to Cart** → **View Cart** → **Create Shipping Address** → **Create Order** → **Process Payment** → **View Order History**
 
 
-https://github.com/HAMED707/Ecommerce-REST-API/blob/main/assets/api-test.mp4
+[https://github.com/HAMED707/Ecommerce-REST-API/blob/main/assets/api-test.mp4](https://private-user-images.githubusercontent.com/125318517/531507311-dd5fe132-d4ee-44c3-9d90-2fef2e8c9220.mp4?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjczNjk1ODcsIm5iZiI6MTc2NzM2OTI4NywicGF0aCI6Ii8xMjUzMTg1MTcvNTMxNTA3MzExLWRkNWZlMTMyLWQ0ZWUtNDRjMy05ZDkwLTJmZWYyZThjOTIyMC5tcDQ_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwMTAyJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDEwMlQxNTU0NDdaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zZTMxNzE4MTVhOWRkNDY2Yjk3ZDY0NzUyYTE5ZjcyZTZmNWY5MWI5YWYyNTBmNGE4M2I0YTgwZDI3MmY1MTFjJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.szfE3__ghNN08JJRkm0iz-Saqq-JeS4cSeOPriWelcg)
 
 
 
