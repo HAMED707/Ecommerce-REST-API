@@ -29,7 +29,13 @@ backend/
 
 **Collection:** [API.postman_collection.json](API.postman_collection.json)
 
-Import the collection into Postman and test endpoints.
+Import the collection into Postman and run the **"Complete E2E Test Scenario"** folder.
+
+### Test Flow
+**Register** → **Login** → **Browse Products** → **Add to Cart** → **View Cart** → **Create Shipping Address** → **Create Order** → **Process Payment** → **View Order History**
+
+https://github.com/user-attachments/assets/api-test.mp4
+
 
 ## API Endpoints
 
@@ -43,14 +49,15 @@ Import the collection into Postman and test endpoints.
 | | `/api/products/{id}/` | GET | ❌ |
 | | `/api/products/{id}/reviews/` | POST/GET | ✅/❌ |
 | **Cart** | `/api/cart/` | GET | ✅ |
-| | `/api/cart/items/` | POST | ✅ |
-| | `/api/cart/items/{id}/` | PUT/DELETE | ✅ |
-| **Orders** | `/api/orders/` | GET/POST | ✅ |
+| | `/api/cart/add/` | POST | ✅ |
+| | `/api/cart/items/{product_id}/` | PUT/DELETE | ✅ |
+| **Orders** | `/api/orders/` | GET | ✅ |
+| | `/api/orders/create/` | POST | ✅ |
 | | `/api/orders/{id}/` | GET/PUT | ✅ |
-| | `/api/orders/addresses/` | GET/POST | ✅ |
-| **Payments** | `/api/payments/` | GET/POST | ✅ |
+| | `/api/orders/shipping-addresses/` | GET/POST | ✅ |
+| **Payments** | `/api/payments/` | GET | ✅ |
+| | `/api/payments/create/` | POST | ✅ |
 | | `/api/payments/{id}/` | GET | ✅ |
-| | `/api/payments/{id}/refund/` | POST | ✅ |
 
 ---
 

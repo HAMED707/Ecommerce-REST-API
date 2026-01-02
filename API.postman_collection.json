@@ -1820,8 +1820,9 @@
                   "",
                   "pm.test('Products returned', function () {",
                   "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData.results).to.be.an('array');",
-                  "    pm.expect(jsonData.results.length).to.be.above(0);",
+                  "    var products = Array.isArray(jsonData) ? jsonData : jsonData.results;",
+                  "    pm.expect(Array.isArray(products)).to.be.true;",
+                  "    pm.expect(products.length).to.be.above(0);",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -1852,8 +1853,8 @@
                   "",
                   "pm.test('Product added to cart', function () {",
                   "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property('id');",
-                  "    pm.expect(jsonData.quantity).to.eql(2);",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData.cart).to.have.property('items');",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -1883,9 +1884,9 @@
               "raw": "{\n    \"product_id\": 1,\n    \"quantity\": 2\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/cart/items/",
+              "raw": "{{base_url}}/api/cart/add/",
               "host": ["{{base_url}}"],
-              "path": ["api", "cart", "items", ""]
+              "path": ["api", "cart", "add", ""]
             },
             "description": "Add 2 units of product to cart"
           }
@@ -1903,7 +1904,8 @@
                   "",
                   "pm.test('Second product added', function () {",
                   "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData.quantity).to.eql(1);",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData.cart.items.length).to.be.above(1);",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -1933,9 +1935,9 @@
               "raw": "{\n    \"product_id\": 3,\n    \"quantity\": 1\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/cart/items/",
+              "raw": "{{base_url}}/api/cart/add/",
               "host": ["{{base_url}}"],
-              "path": ["api", "cart", "items", ""]
+              "path": ["api", "cart", "add", ""]
             },
             "description": "Add another product to cart"
           }
@@ -1996,11 +1998,12 @@
                   "",
                   "if (pm.response.code === 201) {",
                   "    var jsonData = pm.response.json();",
-                  "    pm.environment.set('address_id', jsonData.id);",
+                  "    var address = jsonData.address || jsonData;",
+                  "    pm.environment.set('address_id', address.id);",
                   "    ",
                   "    pm.test('Address created', function () {",
-                  "        pm.expect(jsonData).to.have.property('id');",
-                  "        pm.expect(jsonData.city).to.eql('San Francisco');",
+                  "        pm.expect(address).to.have.property('id');",
+                  "        pm.expect(address.city).to.eql('San Francisco');",
                   "    });",
                   "}"
                 ],
@@ -2051,14 +2054,14 @@
                   "",
                   "if (pm.response.code === 201) {",
                   "    var jsonData = pm.response.json();",
-                  "    pm.environment.set('order_id', jsonData.id);",
-                  "    pm.environment.set('order_number', jsonData.order_number);",
+                  "    pm.environment.set('order_id', jsonData.order.id);",
+                  "    pm.environment.set('order_number', jsonData.order.order_number);",
                   "    ",
                   "    pm.test('Order created successfully', function () {",
-                  "        pm.expect(jsonData).to.have.property('id');",
-                  "        pm.expect(jsonData).to.have.property('order_number');",
-                  "        pm.expect(jsonData.status).to.eql('pending');",
-                  "        pm.expect(jsonData.items).to.be.an('array');",
+                  "        pm.expect(jsonData.order).to.have.property('id');",
+                  "        pm.expect(jsonData.order).to.have.property('order_number');",
+                  "        pm.expect(jsonData.order.status).to.eql('pending');",
+                  "        pm.expect(jsonData.order.items).to.be.an('array');",
                   "    });",
                   "}"
                 ],
@@ -2086,12 +2089,12 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"shipping_address_id\": {{address_id}}\n}"
+              "raw": "{\n    \"shipping_address\": \"456 Market Street, Apt 789\",\n    \"shipping_city\": \"San Francisco\",\n    \"shipping_postal_code\": \"94102\",\n    \"shipping_country\": \"USA\",\n    \"phone_number\": \"+14155552671\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/orders/",
+              "raw": "{{base_url}}/api/orders/create/",
               "host": ["{{base_url}}"],
-              "path": ["api", "orders", ""]
+              "path": ["api", "orders", "create", ""]
             },
             "description": "Create order from cart items"
           }
@@ -2109,12 +2112,12 @@
                   "",
                   "if (pm.response.code === 201) {",
                   "    var jsonData = pm.response.json();",
-                  "    pm.environment.set('payment_id', jsonData.id);",
+                  "    var payment = jsonData.payment || jsonData;",
+                  "    pm.environment.set('payment_id', payment.payment_id || payment.id);",
                   "    ",
                   "    pm.test('Payment processed', function () {",
-                  "        pm.expect(jsonData).to.have.property('id');",
-                  "        pm.expect(jsonData.payment_method).to.eql('credit_card');",
-                  "        pm.expect(jsonData.status).to.be.oneOf(['pending', 'completed']);",
+                  "        pm.expect(jsonData).to.have.property('success');",
+                  "        pm.expect(jsonData.success).to.be.true;",
                   "    });",
                   "}"
                 ],
@@ -2142,12 +2145,12 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"order_id\": {{order_id}},\n    \"payment_method\": \"credit_card\",\n    \"amount\": \"89.97\"\n}"
+              "raw": "{\n    \"order_id\": {{order_id}},\n    \"payment_method\": \"card\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/payments/",
+              "raw": "{{base_url}}/api/payments/create/",
               "host": ["{{base_url}}"],
-              "path": ["api", "payments", ""]
+              "path": ["api", "payments", "create", ""]
             },
             "description": "Process payment for the order"
           }
@@ -2209,8 +2212,9 @@
                   "",
                   "pm.test('Order history returned', function () {",
                   "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData.results).to.be.an('array');",
-                  "    pm.expect(jsonData.results.length).to.be.above(0);",
+                  "    var orders = jsonData.results || jsonData;",
+                  "    pm.expect(Array.isArray(orders)).to.be.true;",
+                  "    pm.expect(orders.length).to.be.above(0);",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -2251,8 +2255,9 @@
                   "",
                   "pm.test('Payment history returned', function () {",
                   "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData.results).to.be.an('array');",
-                  "    pm.expect(jsonData.results.length).to.be.above(0);",
+                  "    var payments = jsonData.payments || jsonData.results || jsonData;",
+                  "    pm.expect(Array.isArray(payments)).to.be.true;",
+                  "    pm.expect(payments.length).to.be.above(0);",
                   "});"
                 ],
                 "type": "text/javascript"
