@@ -35,8 +35,7 @@ Import the collection into Postman and run the **"Complete E2E Test Scenario"** 
 **Register** → **Login** → **Browse Products** → **Add to Cart** → **View Cart** → **Create Shipping Address** → **Create Order** → **Process Payment** → **View Order History**
 
 
-
-<video src="assets/api-test.mp4" controls width="100%"></video>
+https://github.com/HAMED707/Ecommerce-REST-API/blob/main/assets/api-test.mp4
 
 
 
