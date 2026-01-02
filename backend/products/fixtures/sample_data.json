@@ -1,0 +1,650 @@
+[
+  {
+    "model": "accounts.users",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$VXK8jZqP7YxHZ1NqO4UG3H$wYPmC7PQX8N5Z8vN2K0L5h8Xz5M7qJ9K1nZ3L8P4=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "johndoe",
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "john.doe@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-01-15T10:30:00Z",
+      "phone_number": "+12125551234",
+      "date_of_birth": "1990-05-15",
+      "gender": "M",
+      "profile_picture": null,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.users",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$VXK8jZqP7YxHZ1NqO4UG3H$wYPmC7PQX8N5Z8vN2K0L5h8Xz5M7qJ9K1nZ3L8P4=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "janesmith",
+      "first_name": "Jane",
+      "last_name": "Smith",
+      "email": "jane.smith@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-02-20T14:20:00Z",
+      "phone_number": "+14155559876",
+      "date_of_birth": "1988-08-22",
+      "gender": "F",
+      "profile_picture": null,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.users",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$VXK8jZqP7YxHZ1NqO4UG3H$wYPmC7PQX8N5Z8vN2K0L5h8Xz5M7qJ9K1nZ3L8P4=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "mikechen",
+      "first_name": "Mike",
+      "last_name": "Chen",
+      "email": "mike.chen@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-03-10T09:15:00Z",
+      "phone_number": "+13105554567",
+      "date_of_birth": "1995-11-30",
+      "gender": "M",
+      "profile_picture": null,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.users",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$VXK8jZqP7YxHZ1NqO4UG3H$wYPmC7PQX8N5Z8vN2K0L5h8Xz5M7qJ9K1nZ3L8P4=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "sarahj",
+      "first_name": "Sarah",
+      "last_name": "Johnson",
+      "email": "sarah.j@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-04-05T16:45:00Z",
+      "phone_number": "+17025558901",
+      "date_of_birth": "1992-03-18",
+      "gender": "F",
+      "profile_picture": null,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 1,
+    "fields": {
+      "name": "Classic White T-Shirt",
+      "description": "Premium quality cotton t-shirt with a classic fit. Perfect for everyday wear, featuring a soft breathable fabric that keeps you comfortable all day long. Durable construction with reinforced seams.",
+      "price": "29.99",
+      "category": "clothing",
+      "image_url": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500",
+      "stock": 150,
+      "rating": 4.5,
+      "is_active": true,
+      "created_at": "2025-01-01T12:00:00Z",
+      "updated_at": "2025-01-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 2,
+    "fields": {
+      "name": "Slim Fit Jeans - Dark Blue",
+      "description": "Modern slim fit jeans crafted from premium stretch denim. Features a dark blue wash with subtle fading for a stylish look. Five-pocket design with button closure. Perfect blend of comfort and style.",
+      "price": "79.99",
+      "category": "clothing",
+      "image_url": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500",
+      "stock": 80,
+      "rating": 4.3,
+      "is_active": true,
+      "created_at": "2025-01-02T12:00:00Z",
+      "updated_at": "2025-01-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 3,
+    "fields": {
+      "name": "Leather Running Shoes",
+      "description": "High-performance running shoes with premium leather upper and breathable mesh panels. Advanced cushioning system for maximum comfort during long runs. Durable rubber outsole provides excellent traction.",
+      "price": "129.99",
+      "category": "shoes",
+      "image_url": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500",
+      "stock": 60,
+      "rating": 4.7,
+      "is_active": true,
+      "created_at": "2025-01-03T12:00:00Z",
+      "updated_at": "2025-01-03T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 4,
+    "fields": {
+      "name": "Casual Canvas Sneakers",
+      "description": "Comfortable canvas sneakers perfect for daily wear. Features a classic lace-up design with a cushioned insole for all-day comfort. Flexible rubber sole and breathable canvas upper.",
+      "price": "49.99",
+      "category": "shoes",
+      "image_url": "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=500",
+      "stock": 120,
+      "rating": 4.2,
+      "is_active": true,
+      "created_at": "2025-01-04T12:00:00Z",
+      "updated_at": "2025-01-04T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 5,
+    "fields": {
+      "name": "Leather Crossbody Bag",
+      "description": "Elegant leather crossbody bag with adjustable strap. Multiple compartments for organized storage. Genuine leather construction with gold-tone hardware. Perfect size for essentials.",
+      "price": "89.99",
+      "category": "accessories",
+      "image_url": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500",
+      "stock": 45,
+      "rating": 4.6,
+      "is_active": true,
+      "created_at": "2025-01-05T12:00:00Z",
+      "updated_at": "2025-01-05T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 6,
+    "fields": {
+      "name": "Classic Aviator Sunglasses",
+      "description": "Timeless aviator sunglasses with polarized lenses. UV400 protection shields your eyes from harmful rays. Durable metal frame with comfortable nose pads. Includes protective case.",
+      "price": "59.99",
+      "category": "accessories",
+      "image_url": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500",
+      "stock": 90,
+      "rating": 4.4,
+      "is_active": true,
+      "created_at": "2025-01-06T12:00:00Z",
+      "updated_at": "2025-01-06T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 7,
+    "fields": {
+      "name": "Hooded Sweatshirt - Grey",
+      "description": "Comfortable cotton blend hoodie with kangaroo pocket and adjustable drawstring hood. Soft fleece lining keeps you warm. Ribbed cuffs and hem for perfect fit. Machine washable.",
+      "price": "54.99",
+      "category": "clothing",
+      "image_url": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500",
+      "stock": 110,
+      "rating": 4.5,
+      "is_active": true,
+      "created_at": "2025-01-07T12:00:00Z",
+      "updated_at": "2025-01-07T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 8,
+    "fields": {
+      "name": "Formal Dress Shirt - White",
+      "description": "Crisp white dress shirt perfect for business or formal occasions. Made from premium cotton with wrinkle-resistant finish. Classic collar and button cuffs. Slim fit design.",
+      "price": "45.99",
+      "category": "clothing",
+      "image_url": "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500",
+      "stock": 70,
+      "rating": 4.3,
+      "is_active": true,
+      "created_at": "2025-01-08T12:00:00Z",
+      "updated_at": "2025-01-08T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 9,
+    "fields": {
+      "name": "Ankle Boots - Brown Leather",
+      "description": "Stylish brown leather ankle boots with side zipper for easy wear. Premium leather upper with cushioned insole. Stacked heel and durable rubber sole. Perfect for any season.",
+      "price": "139.99",
+      "category": "shoes",
+      "image_url": "https://images.unsplash.com/photo-1605812860427-4024433a70fd?w=500",
+      "stock": 50,
+      "rating": 4.8,
+      "is_active": true,
+      "created_at": "2025-01-09T12:00:00Z",
+      "updated_at": "2025-01-09T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 10,
+    "fields": {
+      "name": "Sport Sandals",
+      "description": "Comfortable sport sandals with adjustable straps and contoured footbed. Water-resistant materials perfect for outdoor activities. Rugged sole provides excellent grip on various terrains.",
+      "price": "39.99",
+      "category": "shoes",
+      "image_url": "https://images.unsplash.com/photo-1603487742131-4160ec999306?w=500",
+      "stock": 85,
+      "rating": 4.1,
+      "is_active": true,
+      "created_at": "2025-01-10T12:00:00Z",
+      "updated_at": "2025-01-10T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 11,
+    "fields": {
+      "name": "Leather Wallet - Black",
+      "description": "Classic bifold leather wallet with multiple card slots and bill compartment. Genuine leather construction ensures durability. RFID blocking technology protects your cards. Compact design fits easily in pocket.",
+      "price": "34.99",
+      "category": "accessories",
+      "image_url": "https://images.unsplash.com/photo-1627123424574-724758594e93?w=500",
+      "stock": 130,
+      "rating": 4.5,
+      "is_active": true,
+      "created_at": "2025-01-11T12:00:00Z",
+      "updated_at": "2025-01-11T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 12,
+    "fields": {
+      "name": "Woven Straw Hat",
+      "description": "Stylish straw hat perfect for summer days. Wide brim provides excellent sun protection. Breathable woven construction keeps you cool. Adjustable inner band for comfortable fit.",
+      "price": "24.99",
+      "category": "accessories",
+      "image_url": "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=500",
+      "stock": 65,
+      "rating": 4.0,
+      "is_active": true,
+      "created_at": "2025-01-12T12:00:00Z",
+      "updated_at": "2025-01-12T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 13,
+    "fields": {
+      "name": "Denim Jacket - Light Wash",
+      "description": "Classic denim jacket with a light vintage wash. Button front closure with chest and side pockets. Durable cotton denim construction. Perfect layering piece for any season.",
+      "price": "69.99",
+      "category": "clothing",
+      "image_url": "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=500",
+      "stock": 55,
+      "rating": 4.6,
+      "is_active": true,
+      "created_at": "2025-01-13T12:00:00Z",
+      "updated_at": "2025-01-13T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 14,
+    "fields": {
+      "name": "Striped Polo Shirt",
+      "description": "Classic polo shirt with horizontal stripes. Made from breathable cotton pique fabric. Three-button placket and ribbed collar. Perfect for casual or smart-casual occasions.",
+      "price": "39.99",
+      "category": "clothing",
+      "image_url": "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=500",
+      "stock": 95,
+      "rating": 4.2,
+      "is_active": true,
+      "created_at": "2025-01-14T12:00:00Z",
+      "updated_at": "2025-01-14T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 15,
+    "fields": {
+      "name": "High-Top Basketball Shoes",
+      "description": "Performance basketball shoes with high-top design for ankle support. Responsive cushioning and herringbone traction pattern. Breathable mesh upper with synthetic overlays for durability.",
+      "price": "149.99",
+      "category": "shoes",
+      "image_url": "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=500",
+      "stock": 40,
+      "rating": 4.7,
+      "is_active": true,
+      "created_at": "2025-01-15T12:00:00Z",
+      "updated_at": "2025-01-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 16,
+    "fields": {
+      "name": "Minimalist Backpack - Grey",
+      "description": "Sleek minimalist backpack with padded laptop compartment fits up to 15 inch. Water-resistant fabric with multiple organizational pockets. Comfortable padded shoulder straps. Perfect for work or travel.",
+      "price": "79.99",
+      "category": "accessories",
+      "image_url": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500",
+      "stock": 75,
+      "rating": 4.5,
+      "is_active": true,
+      "created_at": "2025-01-16T12:00:00Z",
+      "updated_at": "2025-01-16T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 17,
+    "fields": {
+      "name": "Silk Scarf - Floral Pattern",
+      "description": "Luxurious silk scarf with vibrant floral pattern. Soft and lightweight, perfect for any season. Can be worn multiple ways - around neck, as headband, or tied to bag. Hand-rolled edges.",
+      "price": "44.99",
+      "category": "accessories",
+      "image_url": "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=500",
+      "stock": 60,
+      "rating": 4.3,
+      "is_active": true,
+      "created_at": "2025-01-17T12:00:00Z",
+      "updated_at": "2025-01-17T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 18,
+    "fields": {
+      "name": "Winter Parka - Navy Blue",
+      "description": "Warm winter parka with synthetic down insulation. Water-resistant outer shell with removable hood. Multiple pockets including interior security pocket. Extended length provides extra warmth.",
+      "price": "179.99",
+      "category": "clothing",
+      "image_url": "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=500",
+      "stock": 35,
+      "rating": 4.8,
+      "is_active": true,
+      "created_at": "2025-01-18T12:00:00Z",
+      "updated_at": "2025-01-18T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 19,
+    "fields": {
+      "name": "Chino Shorts - Khaki",
+      "description": "Comfortable cotton chino shorts with classic fit. Features slant front pockets and button-through back pockets. Perfect length for summer. Available in versatile khaki color.",
+      "price": "34.99",
+      "category": "clothing",
+      "image_url": "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=500",
+      "stock": 100,
+      "rating": 4.1,
+      "is_active": true,
+      "created_at": "2025-01-19T12:00:00Z",
+      "updated_at": "2025-01-19T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 20,
+    "fields": {
+      "name": "Loafers - Brown Suede",
+      "description": "Elegant suede loafers perfect for business casual or smart casual occasions. Soft suede upper with cushioned insole. Slip-on design for easy wear. Durable rubber sole with subtle treading.",
+      "price": "94.99",
+      "category": "shoes",
+      "image_url": "https://images.unsplash.com/photo-1533867617858-e7b97e060509?w=500",
+      "stock": 45,
+      "rating": 4.4,
+      "is_active": true,
+      "created_at": "2025-01-20T12:00:00Z",
+      "updated_at": "2025-01-20T12:00:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 1,
+    "fields": {
+      "product": 1,
+      "user": 1,
+      "rating": 5,
+      "comment": "Excellent quality t-shirt! The fabric is soft and breathable. Fits perfectly and washes well without shrinking.",
+      "created_at": "2025-02-01T14:30:00Z",
+      "updated_at": "2025-02-01T14:30:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 2,
+    "fields": {
+      "product": 1,
+      "user": 2,
+      "rating": 4,
+      "comment": "Great basic t-shirt. Good value for the price. Would recommend!",
+      "created_at": "2025-02-05T10:15:00Z",
+      "updated_at": "2025-02-05T10:15:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 3,
+    "fields": {
+      "product": 2,
+      "user": 3,
+      "rating": 4,
+      "comment": "Nice jeans with good stretch. The fit is perfect for my body type.",
+      "created_at": "2025-02-08T16:20:00Z",
+      "updated_at": "2025-02-08T16:20:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 4,
+    "fields": {
+      "product": 3,
+      "user": 1,
+      "rating": 5,
+      "comment": "Best running shoes I've ever owned! Extremely comfortable for long distances.",
+      "created_at": "2025-02-12T09:45:00Z",
+      "updated_at": "2025-02-12T09:45:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 5,
+    "fields": {
+      "product": 3,
+      "user": 4,
+      "rating": 5,
+      "comment": "Amazing cushioning and support. My feet don't hurt after running anymore!",
+      "created_at": "2025-02-15T11:30:00Z",
+      "updated_at": "2025-02-15T11:30:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 6,
+    "fields": {
+      "product": 4,
+      "user": 2,
+      "rating": 4,
+      "comment": "Comfortable and stylish. Perfect for everyday wear.",
+      "created_at": "2025-02-18T13:00:00Z",
+      "updated_at": "2025-02-18T13:00:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 7,
+    "fields": {
+      "product": 5,
+      "user": 4,
+      "rating": 5,
+      "comment": "Beautiful bag! The leather quality is outstanding. Love all the compartments.",
+      "created_at": "2025-02-20T15:45:00Z",
+      "updated_at": "2025-02-20T15:45:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 8,
+    "fields": {
+      "product": 5,
+      "user": 1,
+      "rating": 4,
+      "comment": "Great bag for the price. Very functional and looks elegant.",
+      "created_at": "2025-02-22T10:20:00Z",
+      "updated_at": "2025-02-22T10:20:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 9,
+    "fields": {
+      "product": 6,
+      "user": 3,
+      "rating": 4,
+      "comment": "Classic aviators that look great. Lenses are clear and provide good sun protection.",
+      "created_at": "2025-02-25T14:10:00Z",
+      "updated_at": "2025-02-25T14:10:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 10,
+    "fields": {
+      "product": 7,
+      "user": 2,
+      "rating": 5,
+      "comment": "Super cozy hoodie! Perfect weight for layering. The grey color is exactly as shown.",
+      "created_at": "2025-02-28T11:35:00Z",
+      "updated_at": "2025-02-28T11:35:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 11,
+    "fields": {
+      "product": 7,
+      "user": 3,
+      "rating": 4,
+      "comment": "Good quality sweatshirt. Warm and comfortable.",
+      "created_at": "2025-03-02T09:25:00Z",
+      "updated_at": "2025-03-02T09:25:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 12,
+    "fields": {
+      "product": 9,
+      "user": 4,
+      "rating": 5,
+      "comment": "Absolutely love these boots! They're comfortable, stylish, and well-made.",
+      "created_at": "2025-03-05T16:40:00Z",
+      "updated_at": "2025-03-05T16:40:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 13,
+    "fields": {
+      "product": 9,
+      "user": 1,
+      "rating": 5,
+      "comment": "Perfect ankle boots. The leather is soft and they fit true to size.",
+      "created_at": "2025-03-08T12:15:00Z",
+      "updated_at": "2025-03-08T12:15:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 14,
+    "fields": {
+      "product": 11,
+      "user": 3,
+      "rating": 4,
+      "comment": "Nice wallet with plenty of card slots. RFID protection works well.",
+      "created_at": "2025-03-10T10:50:00Z",
+      "updated_at": "2025-03-10T10:50:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 15,
+    "fields": {
+      "product": 13,
+      "user": 2,
+      "rating": 5,
+      "comment": "Perfect denim jacket! The wash is beautiful and it goes with everything.",
+      "created_at": "2025-03-15T14:25:00Z",
+      "updated_at": "2025-03-15T14:25:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 16,
+    "fields": {
+      "product": 15,
+      "user": 3,
+      "rating": 5,
+      "comment": "Best basketball shoes for the price. Great support and traction on the court.",
+      "created_at": "2025-03-18T11:40:00Z",
+      "updated_at": "2025-03-18T11:40:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 17,
+    "fields": {
+      "product": 16,
+      "user": 1,
+      "rating": 4,
+      "comment": "Sleek design and very functional. Laptop compartment is well-padded.",
+      "created_at": "2025-03-22T09:15:00Z",
+      "updated_at": "2025-03-22T09:15:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 18,
+    "fields": {
+      "product": 18,
+      "user": 4,
+      "rating": 5,
+      "comment": "Warmest parka I've ever owned! Perfect for harsh winters.",
+      "created_at": "2025-03-25T15:30:00Z",
+      "updated_at": "2025-03-25T15:30:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 19,
+    "fields": {
+      "product": 20,
+      "user": 2,
+      "rating": 4,
+      "comment": "Comfortable loafers that look professional. Suede quality is good.",
+      "created_at": "2025-03-28T13:45:00Z",
+      "updated_at": "2025-03-28T13:45:00Z"
+    }
+  },
+  {
+    "model": "products.review",
+    "pk": 20,
+    "fields": {
+      "product": 8,
+      "user": 3,
+      "rating": 4,
+      "comment": "Great dress shirt. Wrinkle-resistant fabric is a game changer.",
+      "created_at": "2025-03-30T10:30:00Z",
+      "updated_at": "2025-03-30T10:30:00Z"
+    }
+  }
+]

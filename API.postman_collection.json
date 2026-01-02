@@ -1,0 +1,2286 @@
+{
+  "info": {
+    "_postman_id": "ecommerce-api-collection",
+    "name": "E-commerce REST API",
+    "description": "Complete API collection for Django E-commerce backend with JWT authentication",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "order_number",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "order_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "address_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "payment_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refund_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"test@example.com\",\n    \"password\": \"TestPass123!\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"phone_number\": \"+12125551234\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register", ""]
+            },
+            "description": "Register new user - No tokens returned, must login after"
+          }
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('access_token', jsonData.tokens.access);",
+                  "    pm.environment.set('refresh_token', jsonData.tokens.refresh);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"testuser\",\n    \"password\": \"TestPass123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login", ""]
+            },
+            "description": "Login with username and password - Returns JWT tokens"
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('access_token', jsonData.access);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"refresh\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/token/refresh/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "token", "refresh", ""]
+            },
+            "description": "Refresh access token using refresh token"
+          }
+        },
+        {
+          "name": "Get User Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/auth/profile/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "profile", ""]
+            },
+            "description": "Get authenticated user profile"
+          }
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"first_name\": \"John Updated\",\n    \"last_name\": \"Doe Updated\",\n    \"phone_number\": \"+442071234567\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/profile/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "profile", ""]
+            },
+            "description": "Update user profile (PUT or PATCH)"
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/auth/logout/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "logout", ""]
+            },
+            "description": "Logout user"
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Products",
+      "item": [
+        {
+          "name": "List All Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/products/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products", ""]
+            },
+            "description": "Get all products"
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/products/1/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products", "1", ""]
+            },
+            "description": "Get single product details"
+          }
+        },
+        {
+          "name": "Search Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/products/?search=shirt",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products", ""],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "shirt"
+                }
+              ]
+            },
+            "description": "Search products by name or description"
+          }
+        },
+        {
+          "name": "Filter Products by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/products/?category=clothing",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products", ""],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "clothing"
+                }
+              ]
+            },
+            "description": "Filter by category: clothing, shoes, accessories"
+          }
+        },
+        {
+          "name": "Filter Products by Price Range",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/products/?min_price=10&max_price=100",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products", ""],
+              "query": [
+                {
+                  "key": "min_price",
+                  "value": "10"
+                },
+                {
+                  "key": "max_price",
+                  "value": "100"
+                }
+              ]
+            },
+            "description": "Filter products by price range"
+          }
+        },
+        {
+          "name": "Get Featured Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/products/featured/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products", "featured", ""]
+            },
+            "description": "Get featured/recommended products"
+          }
+        },
+        {
+          "name": "Get Product Reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/products/1/reviews/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products", "1", "reviews", ""]
+            },
+            "description": "Get all reviews for a product"
+          }
+        },
+        {
+          "name": "Add Product Review",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"rating\": 5,\n    \"comment\": \"Great product! Highly recommended.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/products/1/reviews/add/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products", "1", "reviews", "add", ""]
+            },
+            "description": "Add review to product (authenticated)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Cart",
+      "item": [
+        {
+          "name": "View Cart",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cart/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart", ""]
+            },
+            "description": "Get user's cart with all items"
+          }
+        },
+        {
+          "name": "Get Cart Count",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cart/count/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart", "count", ""]
+            },
+            "description": "Get total items count in cart"
+          }
+        },
+        {
+          "name": "Add Item to Cart",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"product_id\": 1,\n    \"quantity\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cart/add/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart", "add", ""]
+            },
+            "description": "Add product to cart with quantity (NOTE: Make sure product ID 1 has sufficient stock in database)"
+          }
+        },
+        {
+          "name": "Update Cart Item Quantity",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"quantity\": 3\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cart/items/1/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart", "items", "1", ""]
+            },
+            "description": "Update quantity of specific product in cart"
+          }
+        },
+        {
+          "name": "Remove Item from Cart",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cart/items/1/remove/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart", "items", "1", "remove", ""]
+            },
+            "description": "Remove specific product from cart"
+          }
+        },
+        {
+          "name": "Clear Cart",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cart/clear/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart", "clear", ""]
+            },
+            "description": "Clear all items from cart"
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Orders",
+      "item": [
+        {
+          "name": "Create Order from Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.order && jsonData.order.order_number) {",
+                  "        pm.environment.set('order_number', jsonData.order.order_number);",
+                  "        pm.environment.set('order_id', jsonData.order.id);",
+                  "        console.log('Order created: ' + jsonData.order.order_number);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"shipping_address\": \"123 Main Street\",\n    \"shipping_city\": \"New York\",\n    \"shipping_postal_code\": \"10001\",\n    \"shipping_country\": \"USA\",\n    \"phone_number\": \"+12125551234\",\n    \"notes\": \"Please deliver before 5 PM\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/orders/create/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "create", ""]
+            },
+            "description": "Create order from cart items with shipping info"
+          }
+        },
+        {
+          "name": "List My Orders",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/orders/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", ""]
+            },
+            "description": "Get all orders for authenticated user"
+          }
+        },
+        {
+          "name": "Get Order Details by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/orders/{{order_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "{{order_id}}", ""]
+            },
+            "description": "Get specific order details"
+          }
+        },
+        {
+          "name": "Get Order by Order Number",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/orders/number/{{order_number}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "number", "{{order_number}}", ""]
+            },
+            "description": "Get order by unique order number"
+          }
+        },
+        {
+          "name": "Cancel Order",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/orders/{{order_id}}/cancel/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "{{order_id}}", "cancel", ""]
+            },
+            "description": "Cancel order and restore stock"
+          }
+        },
+        {
+          "name": "Update Order Status (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"shipped\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/orders/{{order_id}}/status/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "{{order_id}}", "status", ""]
+            },
+            "description": "Update order status: pending, processing, shipped, delivered, cancelled"
+          }
+        },
+        {
+          "name": "List Shipping Addresses",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/orders/shipping-addresses/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "shipping-addresses", ""]
+            },
+            "description": "Get all saved shipping addresses for authenticated user"
+          }
+        },
+        {
+          "name": "Create Shipping Address",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.address && jsonData.address.id) {",
+                  "        pm.environment.set('address_id', jsonData.address.id);",
+                  "        console.log('Address created with ID: ' + jsonData.address.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"full_name\": \"John Doe\",\n    \"phone_number\": \"+12125551234\",\n    \"address_line1\": \"123 Main Street\",\n    \"address_line2\": \"Apt 4B\",\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"postal_code\": \"10001\",\n    \"country\": \"USA\",\n    \"is_default\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/orders/shipping-addresses/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "shipping-addresses", ""]
+            },
+            "description": "Create a new shipping address"
+          }
+        },
+        {
+          "name": "Get Shipping Address Details",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/orders/shipping-addresses/{{address_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "shipping-addresses", "{{address_id}}", ""]
+            },
+            "description": "Get specific shipping address details"
+          }
+        },
+        {
+          "name": "Update Shipping Address",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"full_name\": \"John Doe\",\n    \"phone_number\": \"+13105551234\",\n    \"address_line1\": \"456 Oak Avenue\",\n    \"address_line2\": \"Suite 200\",\n    \"city\": \"Los Angeles\",\n    \"state\": \"CA\",\n    \"postal_code\": \"90001\",\n    \"country\": \"USA\",\n    \"is_default\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/orders/shipping-addresses/{{address_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "shipping-addresses", "{{address_id}}", ""]
+            },
+            "description": "Update shipping address (full update)"
+          }
+        },
+        {
+          "name": "Partial Update Shipping Address",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"phone_number\": \"+14165551234\",\n    \"city\": \"San Francisco\",\n    \"state\": \"CA\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/orders/shipping-addresses/{{address_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "shipping-addresses", "{{address_id}}", ""]
+            },
+            "description": "Partially update shipping address (only provided fields)"
+          }
+        },
+        {
+          "name": "Set Default Shipping Address",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/orders/shipping-addresses/{{address_id}}/set-default/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "shipping-addresses", "{{address_id}}", "set-default", ""]
+            },
+            "description": "Set a shipping address as default (unsets other defaults automatically)"
+          }
+        },
+        {
+          "name": "Get Default Shipping Address",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/orders/shipping-addresses/default/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "shipping-addresses", "default", ""]
+            },
+            "description": "Get the default shipping address for authenticated user"
+          }
+        },
+        {
+          "name": "Delete Shipping Address",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/orders/shipping-addresses/{{address_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "shipping-addresses", "{{address_id}}", ""]
+            },
+            "description": "Delete a shipping address (NOTE: Run this last to avoid breaking other requests)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Payments",
+      "description": "Complete payment workflow: Create payments for orders, process them with different methods (card, COD, demo), manage refunds, and cancel pending payments. Mock implementation for learning - no real payment gateways needed.",
+      "item": [
+        {
+          "name": "Scenario 1: Standard Card Payment Flow",
+          "description": "Complete flow: Create payment → Process → View details",
+          "item": [
+            {
+              "name": "Step 1: Create Payment for Order",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Payment created successfully', function() {",
+                      "    pm.response.to.have.status(201);",
+                      "});",
+                      "",
+                      "pm.test('Response has payment data', function() {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData).to.have.property('success', true);",
+                      "    pm.expect(jsonData).to.have.property('payment');",
+                      "    pm.expect(jsonData.payment).to.have.property('payment_id');",
+                      "    pm.expect(jsonData.payment.status).to.equal('pending');",
+                      "});",
+                      "",
+                      "if (pm.response.code === 201) {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.environment.set('payment_id', jsonData.payment.payment_id);",
+                      "    console.log('✅ Payment created: ' + jsonData.payment.payment_id);",
+                      "    console.log('💰 Amount: $' + jsonData.payment.amount);",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"order_id\": {{order_id}},\n    \"payment_method\": \"card\",\n    \"payment_details\": {\n        \"card_last4\": \"4242\",\n        \"card_brand\": \"Visa\"\n    }\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/payments/create/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "payments", "create", ""]
+                },
+                "description": "📝 Create a payment for an order\n\n**Prerequisites:**\n- Have a valid order_id (from creating an order)\n- Order must not already have a payment\n\n**Payment Methods:**\n- `card` - Credit/Debit card\n- `cod` - Cash on Delivery\n- `bank_transfer` - Bank Transfer\n- `wallet` - Digital Wallet\n- `demo` - Demo/Test (auto-completes)\n\n**What Happens:**\n- Payment record created with 'pending' status\n- Linked to the order\n- Returns payment_id for next steps"
+              }
+            },
+            {
+              "name": "Step 2: Process Payment",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Payment processed successfully', function() {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test('Payment status is completed', function() {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.success).to.be.true;",
+                      "    pm.expect(jsonData.payment.status).to.equal('completed');",
+                      "    pm.expect(jsonData.payment).to.have.property('transaction_id');",
+                      "    pm.expect(jsonData.payment).to.have.property('completed_at');",
+                      "});",
+                      "",
+                      "console.log('✅ Payment completed!');",
+                      "console.log('🛒 Cart has been cleared');",
+                      "console.log('📦 Order status updated to processing');"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"payment_id\": \"{{payment_id}}\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/payments/process/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "payments", "process", ""]
+                },
+                "description": "💳 Process a pending payment (mock processing)\n\n**What Happens:**\n1. Payment status changes: pending → completed\n2. Order payment_status updated to 'completed'\n3. Order status updated to 'processing'\n4. User's cart is automatically cleared\n5. Transaction ID generated\n\n**Note:** This is mock processing - no real payment gateway is called. In production, this would integrate with Stripe, PayPal, etc."
+              }
+            },
+            {
+              "name": "Step 3: View Payment Details",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Payment details retrieved', function() {",
+                      "    pm.response.to.have.status(200);",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.success).to.be.true;",
+                      "    pm.expect(jsonData.payment).to.have.property('payment_id');",
+                      "    pm.expect(jsonData.payment).to.have.property('order_number');",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/payments/{{payment_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "payments", "{{payment_id}}", ""]
+                },
+                "description": "🔍 Get detailed payment information\n\n**Returns:**\n- Payment ID and status\n- Order number\n- Amount and currency\n- Payment method\n- Transaction ID\n- Timestamps (created, completed)\n- Can be refunded?"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Scenario 2: Cash on Delivery",
+          "description": "COD payment flow - common in e-commerce",
+          "item": [
+            {
+              "name": "Create COD Payment",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('COD payment created', function() {",
+                      "    pm.response.to.have.status(201);",
+                      "});",
+                      "",
+                      "if (pm.response.code === 201) {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.environment.set('payment_id_cod', jsonData.payment.payment_id);",
+                      "    console.log('✅ COD Payment: ' + jsonData.payment.payment_id);",
+                      "    console.log('📦 Payment on delivery - No upfront payment');",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"order_id\": {{order_id}},\n    \"payment_method\": \"cod\",\n    \"payment_details\": {\n        \"delivery_instructions\": \"Call before delivery\"\n    }\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/payments/create/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "payments", "create", ""]
+                },
+                "description": "💵 Cash on Delivery payment\n\n**Use Case:**\n- Customer pays cash when product is delivered\n- No upfront payment required\n- Common in many markets\n\n**Note:** Create a NEW order first (this won't work with an order that already has payment)"
+              }
+            },
+            {
+              "name": "Process COD Payment",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"payment_id\": \"{{payment_id_cod}}\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/payments/process/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "payments", "process", ""]
+                },
+                "description": "Process COD payment - clears cart and prepares order for delivery"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Scenario 3: Demo Payment (Testing)",
+          "description": "Quick testing with auto-complete payment",
+          "item": [
+            {
+              "name": "Create Demo Payment",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Demo payment auto-completes', function() {",
+                      "    pm.response.to.have.status(201);",
+                      "    var jsonData = pm.response.json();",
+                      "    // Demo payments auto-complete on process",
+                      "    pm.expect(jsonData.payment.payment_method).to.equal('demo');",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"order_id\": {{order_id}},\n    \"payment_method\": \"demo\",\n    \"payment_details\": {\n        \"test_mode\": true,\n        \"note\": \"Testing payment flow\"\n    }\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/payments/create/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "payments", "create", ""]
+                },
+                "description": "🧪 Demo/Test payment mode\n\n**Purpose:**\n- Quick testing without mock gateway\n- Auto-completes when processed\n- Perfect for development\n\n**Note:** Create a NEW order first"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Scenario 4: Refund Management",
+          "description": "Handle refunds for completed payments",
+          "item": [
+            {
+              "name": "Create Full Refund",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Refund created successfully', function() {",
+                      "    pm.response.to.have.status(201);",
+                      "});",
+                      "",
+                      "pm.test('Refund auto-processed', function() {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.refund.status).to.equal('completed');",
+                      "    pm.expect(jsonData.refund).to.have.property('refund_transaction_id');",
+                      "});",
+                      "",
+                      "if (pm.response.code === 201) {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.environment.set('refund_id', jsonData.refund.refund_id);",
+                      "    console.log('✅ Refund processed: ' + jsonData.refund.refund_id);",
+                      "    console.log('💰 Amount: $' + jsonData.refund.amount);",
+                      "    console.log('📦 Product stock restored');",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"payment_id\": \"{{payment_id}}\",\n    \"reason\": \"Customer requested refund - product defect\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/payments/refunds/create/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "payments", "refunds", "create", ""]
+                },
+                "description": "💸 Create full refund\n\n**Prerequisites:**\n- Payment must be 'completed'\n- Cannot refund cancelled payments\n- No existing refund for this payment\n\n**What Happens:**\n1. Full payment amount refunded\n2. Payment status → 'refunded'\n3. Order status → 'cancelled'\n4. Product stock restored\n5. Auto-processed (mock system)\n\n**Common Reasons:**\n- Product defect\n- Customer not satisfied\n- Wrong item delivered\n- Order cancellation after payment"
+              }
+            },
+            {
+              "name": "Create Partial Refund",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Partial refund created', function() {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.refund.status).to.equal('completed');",
+                      "});",
+                      "",
+                      "console.log('✅ Partial refund processed');",
+                      "console.log('💰 Partial amount returned to customer');"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"payment_id\": \"{{payment_id}}\",\n    \"amount\": 50.00,\n    \"reason\": \"Partial refund - minor damage to packaging\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/payments/refunds/create/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "payments", "refunds", "create", ""]
+                },
+                "description": "💵 Create partial refund\n\n**Use Cases:**\n- Minor product damage\n- Missing accessories\n- Late delivery compensation\n- Service discount\n\n**Note:** Specify amount less than total payment. Need a NEW completed payment to test."
+              }
+            },
+            {
+              "name": "List All Refunds",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Refunds list retrieved', function() {",
+                      "    pm.response.to.have.status(200);",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData).to.have.property('refunds');",
+                      "    pm.expect(jsonData).to.have.property('count');",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/payments/refunds/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "payments", "refunds", ""]
+                },
+                "description": "📋 View all refunds for authenticated user\n\n**Shows:**\n- Refund ID and status\n- Associated payment and order\n- Amount refunded\n- Reason for refund\n- Timestamps"
+              }
+            }
+          ]
+        },
+        {
+          "name": "View & Manage",
+          "description": "List and manage all payments",
+          "item": [
+            {
+              "name": "List All My Payments",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Payments list retrieved', function() {",
+                      "    pm.response.to.have.status(200);",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData).to.have.property('success', true);",
+                      "    pm.expect(jsonData).to.have.property('payments');",
+                      "    pm.expect(jsonData).to.have.property('count');",
+                      "});",
+                      "",
+                      "var jsonData = pm.response.json();",
+                      "console.log('📊 Total payments: ' + jsonData.count);"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/payments/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "payments", ""]
+                },
+                "description": "📊 View all payments\n\n**Returns:**\n- All payments for authenticated user\n- Payment status (pending/completed/refunded/cancelled)\n- Associated orders\n- Payment methods used\n- Amounts and dates"
+              }
+            },
+            {
+              "name": "Cancel Pending Payment",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Payment cancellation handled', function() {",
+                      "    // Can succeed (200) or fail (400) depending on payment status",
+                      "    pm.expect(pm.response.code).to.be.oneOf([200, 400]);",
+                      "});",
+                      "",
+                      "if (pm.response.code === 200) {",
+                      "    console.log('✅ Payment cancelled');",
+                      "} else {",
+                      "    console.log('⚠️ Cannot cancel - payment already processed');",
+                      "    console.log('💡 Use refund endpoint for completed payments');",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/payments/{{payment_id}}/cancel/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "payments", "{{payment_id}}", "cancel", ""]
+                },
+                "description": "❌ Cancel pending payment\n\n**Requirements:**\n- Payment status must be 'pending'\n- Cannot cancel 'completed' payments\n\n**Use Case:**\n- Customer changes mind before processing\n- Wrong payment method selected\n- Order needs modification\n\n**Note:** For completed payments, use Refund instead!"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "6. Test Scenarios",
+      "item": [
+        {
+          "name": "ERROR - Register with Existing Username",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"test@example.com\",\n    \"password\": \"TestPass123!\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register", ""]
+            },
+            "description": "Should return error: Username already exists"
+          }
+        },
+        {
+          "name": "ERROR - Login with Wrong Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"testuser\",\n    \"password\": \"WrongPassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login", ""]
+            },
+            "description": "Should return error: Invalid credentials"
+          }
+        },
+        {
+          "name": "ERROR - Access Cart Without Auth",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cart/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart", ""]
+            },
+            "description": "Should return 401 Unauthorized"
+          }
+        },
+        {
+          "name": "ERROR - Create Order with Empty Cart",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"shipping_address\": \"123 Main Street\",\n    \"shipping_city\": \"New York\",\n    \"shipping_postal_code\": \"10001\",\n    \"shipping_country\": \"USA\",\n    \"phone_number\": \"+12125551234\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/orders/create/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "create", ""]
+            },
+            "description": "Should return error: Cart is empty"
+          }
+        },
+        {
+          "name": "ERROR - Add Out of Stock Item",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"product_id\": 1,\n    \"quantity\": 9999\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cart/add/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart", "add", ""]
+            },
+            "description": "Should return error: Not enough stock"
+          }
+        },
+        {
+          "name": "ERROR - Cancel Delivered Order",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/orders/{{order_id}}/cancel/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "{{order_id}}", "cancel", ""]
+            },
+            "description": "Should return error if order is already delivered/shipped"
+          }
+        },
+        {
+          "name": "ERROR - Phone Without Country Code",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"phonetest\",\n    \"email\": \"phonetest@example.com\",\n    \"password\": \"TestPass123!\",\n    \"first_name\": \"Phone\",\n    \"last_name\": \"Test\",\n    \"phone_number\": \"1234567890\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register", ""]
+            },
+            "description": "Should return error: Phone number must include country code"
+          }
+        },
+        {
+          "name": "ERROR - Phone Number Too Short",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"full_name\": \"Test User\",\n    \"phone_number\": \"+12345\",\n    \"address_line1\": \"123 Test St\",\n    \"city\": \"Test City\",\n    \"postal_code\": \"12345\",\n    \"country\": \"USA\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/orders/shipping-addresses/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "shipping-addresses", ""]
+            },
+            "description": "Should return error: Phone number is too short"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Complete E2E Test Scenario",
+      "description": "End-to-End test scenario: Register → Login → Browse Products → Add to Cart → Create Address → Place Order → Process Payment → View History",
+      "item": [
+        {
+          "name": "Step 1: Register New User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('User created successfully', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('user');",
+                  "    pm.expect(jsonData.user.email).to.eql('sarah.smith@example.com');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"sarah.smith@example.com\",\n    \"username\": \"sarah_smith\",\n    \"password\": \"SecurePass456!\",\n    \"first_name\": \"Sarah\",\n    \"last_name\": \"Smith\",\n    \"phone_number\": \"+14155552671\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register", ""]
+            },
+            "description": "Register a new customer account"
+          }
+        },
+        {
+          "name": "Step 2: Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('access_token', jsonData.tokens.access);",
+                  "    pm.environment.set('refresh_token', jsonData.tokens.refresh);",
+                  "    ",
+                  "    pm.test('Tokens received', function () {",
+                  "        pm.expect(jsonData.tokens).to.have.property('access');",
+                  "        pm.expect(jsonData.tokens).to.have.property('refresh');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"sarah_smith\",\n    \"password\": \"SecurePass456!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login", ""]
+            },
+            "description": "Login and receive JWT tokens"
+          }
+        },
+        {
+          "name": "Step 3: Browse Products",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Products returned', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.results).to.be.an('array');",
+                  "    pm.expect(jsonData.results.length).to.be.above(0);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/products/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products", ""]
+            },
+            "description": "Browse available products"
+          }
+        },
+        {
+          "name": "Step 4: Add Product to Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Product added to cart', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "    pm.expect(jsonData.quantity).to.eql(2);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"product_id\": 1,\n    \"quantity\": 2\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cart/items/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart", "items", ""]
+            },
+            "description": "Add 2 units of product to cart"
+          }
+        },
+        {
+          "name": "Step 5: Add Another Product to Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Second product added', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.quantity).to.eql(1);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"product_id\": 3,\n    \"quantity\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cart/items/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart", "items", ""]
+            },
+            "description": "Add another product to cart"
+          }
+        },
+        {
+          "name": "Step 6: View Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Cart has items', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.items).to.be.an('array');",
+                  "    pm.expect(jsonData.items.length).to.be.above(0);",
+                  "    pm.expect(jsonData).to.have.property('total_price');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cart/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart", ""]
+            },
+            "description": "View current cart contents"
+          }
+        },
+        {
+          "name": "Step 7: Create Shipping Address",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('address_id', jsonData.id);",
+                  "    ",
+                  "    pm.test('Address created', function () {",
+                  "        pm.expect(jsonData).to.have.property('id');",
+                  "        pm.expect(jsonData.city).to.eql('San Francisco');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"full_name\": \"Sarah Smith\",\n    \"phone_number\": \"+14155552671\",\n    \"address_line1\": \"456 Market Street\",\n    \"address_line2\": \"Apt 789\",\n    \"city\": \"San Francisco\",\n    \"state\": \"CA\",\n    \"postal_code\": \"94102\",\n    \"country\": \"USA\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/orders/shipping-addresses/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "shipping-addresses", ""]
+            },
+            "description": "Create shipping address for order"
+          }
+        },
+        {
+          "name": "Step 8: Create Order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('order_id', jsonData.id);",
+                  "    pm.environment.set('order_number', jsonData.order_number);",
+                  "    ",
+                  "    pm.test('Order created successfully', function () {",
+                  "        pm.expect(jsonData).to.have.property('id');",
+                  "        pm.expect(jsonData).to.have.property('order_number');",
+                  "        pm.expect(jsonData.status).to.eql('pending');",
+                  "        pm.expect(jsonData.items).to.be.an('array');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"shipping_address_id\": {{address_id}}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/orders/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", ""]
+            },
+            "description": "Create order from cart items"
+          }
+        },
+        {
+          "name": "Step 9: Process Payment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('payment_id', jsonData.id);",
+                  "    ",
+                  "    pm.test('Payment processed', function () {",
+                  "        pm.expect(jsonData).to.have.property('id');",
+                  "        pm.expect(jsonData.payment_method).to.eql('credit_card');",
+                  "        pm.expect(jsonData.status).to.be.oneOf(['pending', 'completed']);",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"order_id\": {{order_id}},\n    \"payment_method\": \"credit_card\",\n    \"amount\": \"89.97\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/payments/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "payments", ""]
+            },
+            "description": "Process payment for the order"
+          }
+        },
+        {
+          "name": "Step 10: View Order Details",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Order details retrieved', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "    pm.expect(jsonData).to.have.property('order_number');",
+                  "    pm.expect(jsonData).to.have.property('items');",
+                  "    pm.expect(jsonData).to.have.property('shipping_address');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/orders/{{order_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "{{order_id}}", ""]
+            },
+            "description": "View specific order details"
+          }
+        },
+        {
+          "name": "Step 11: View Order History",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Order history returned', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.results).to.be.an('array');",
+                  "    pm.expect(jsonData.results.length).to.be.above(0);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/orders/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", ""]
+            },
+            "description": "View complete order history"
+          }
+        },
+        {
+          "name": "Step 12: View Payment History",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Payment history returned', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.results).to.be.an('array');",
+                  "    pm.expect(jsonData.results.length).to.be.above(0);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/payments/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "payments", ""]
+            },
+            "description": "View payment transaction history"
+          }
+        }
+      ]
+    }
+  ]
+}
