@@ -34,8 +34,9 @@ Import the collection into Postman and run the **"Complete E2E Test Scenario"** 
 ### Test Flow
 **Register** → **Login** → **Browse Products** → **Add to Cart** → **View Cart** → **Create Shipping Address** → **Create Order** → **Process Payment** → **View Order History**
 
-https://github.com/user-attachments/assets/api-test.mp4
+https://github.com/user-attachments/assets/5cd01cc9-e9c2-48e7-ad12-85db2c2fdda1
 
+The collection includes automated tests and token management for seamless testing.
 
 ## API Endpoints
 
